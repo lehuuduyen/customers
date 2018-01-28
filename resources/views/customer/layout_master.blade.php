@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="http://localhost:88/altimedia/myNextProject/">
+  <base href="http://localhost:8000/altamedia/customers/">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | General Form Elements</title>
@@ -345,7 +345,7 @@
           <ul class="treeview-menu">
             <li class="@if($currentRoute == 'customer.add') active  @endif"><a href="{{ route('customer.add') }}"><i class="fa fa-circle-o"></i>Thêm khách hàng</a></li>
             <li class="@if($currentRoute == 'customer.list') active  @endif"><a href="{{ route('customer.list') }}"><i class="fa fa-circle-o"></i>Danh sách khách hàng</a></li>
-            <li class=""><a href="{{ route('customer.list') }}"><i class="fa fa-circle-o"></i>Ticket</a></li>
+            <li class=""><a href="{{ route('ticket.add') }}"><i class="fa fa-circle-o"></i>Ticket</a></li>
             <li class=""><a href="{{ route('ticket.list') }}"><i class="fa fa-circle-o"></i>Danh sách ticket</a></li>
           </ul>
         </li>

@@ -8,16 +8,17 @@ use Illuminate\Support\Facades\Route;
 
 class TicketController extends Controller
 {
+
     protected $_currentRoute;
 
 	public function __construct(){
 		$this->_currentRoute = Route::currentRouteName();
 		$this->_data['currentRoute'] = $this->_currentRoute;
 		//echo $this->_data['currentRoute'];die;
-          
+
 	}
 	public function getadd(){
-    	return view('ticket/add_customer',$this->_data);
+    	return view('ticket/ticket',$this->_data);
     }
     public function getlist(){
     	return view('ticket/list_ticket',$this->_data);
@@ -28,6 +29,6 @@ class TicketController extends Controller
     }
     public function getdetail($id){
     	$this->_data['id'] = $id;
-    	return view('ticket/detail_customer',$this->_data);
+    	return view('ticket/detail_ticket',$this->_data);
     }
 }
