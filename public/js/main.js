@@ -21,7 +21,7 @@ $('#images').on('change',function(e){
         reader.onload = function(e){
             var template = '<form action="/upload">'+
                 '<img src="'+e.target.result+'" width="100px"> '+
-                '<label>Image Title</label> <input type="text" name="title">'+
+                '<label>'+file['name']+'</label>'+
                 ' <button class="btn btn-sm btn-info upload">Upload</button>'+
                 ' <a href="#" class="btn btn-sm btn-danger remove">Remove</a>'+
                 '</form>';
