@@ -110,12 +110,6 @@
                     <div class="col-md-12">
                       <!-- The time line -->
                       <ul class="timeline" id="timeline">
-                        <!-- timeline time label -->
-                        <!-- /.timeline-label -->
-                        <!-- timeline item -->
-
-                        <!-- END timeline item -->
-                        <!-- timeline item -->
 
                       </ul>
                     </div>
@@ -134,24 +128,25 @@
 
 
 
-            <div class="content">
+              <div class="login-panel panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">Timeline Post</h3>
+                  </div>
+                  <div class="panel-body">
+                      <form role="form">
+                          <fieldset>
+                              <div class="form-group">
+                                  <textarea class="form-control" rows="3" placeholder="Write in your wall" name="email" type="textarea" id="target" autofocus=""></textarea>
+                              </div>
 
-              <h1>Nội dung phản hồi</h1>
 
-              <div class="pri_message">
-                <textarea id="target" name="" rows="5" style="width: 100%"></textarea>
-
+                              <!-- Change this to a button or input when using this as a form -->
+                              <button type="" id="submit" class="btn btn-primary  btn-success save_ticket" style="float: right">Save Ticket</button>
+                          </fieldset>
+                      </form>
+                  </div>
               </div>
-              <div class="row" style="padding: 0 15px;">
-                <div class="box-footer">
-                  <button type="" id="submit" class="btn btn-primary save_ticket" style="float: right">Save Ticket</button>
-                  <button type="" class="btn btn_save" style="float: right; margin-right: 10px;" id="pagination">Cancel</button>
-                </div>
-              </div>
-
-            </div>
           </div>
-
 
 
         </div>
@@ -236,84 +231,84 @@
           html="";
 
           $.ajax({
-              url: 'http://ticket.dev-altamedia.com/api/ticket_response/'+ticket_id+'?page='+page,
+              url: 'http://ticket.dev-altamedia.com/api/ticket_response/'+ticket_id,
               type: 'GET',
               success:function(kq){
                  
 
-                  for (var i =0; i < kq[0]['data'].length ; i++) {
-                      $.each(kq,function(key,item){
-
-                          if(kq[0]['data'][i]['user_id']== null){
-
-
-                              html+='<li>';
-                              html+='  <i class="fa fa-user bg-aqua"></i>';
-
-                              html+=' <div class="timeline-item">'
-                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
-
-
-                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['customers_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
-
-
-                              html+=' <div class="timeline-body">';
-                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
-
-                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
-                              }
-
-
-                              html+='  </div>';
-                              html+=' </div>';
-
-
-
-
-
-                              html+=' </li>';
-
-
-
-                          }
-                          else{
-                              html+='<li>';
-                              html+='  <i class="fa fa-user bg-yellow"></i>';
-
-                              html+=' <div class="timeline-item">'
-                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
-
-
-                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['user_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
-
-
-                              html+=' <div class="timeline-body">';
-                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
-
-                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
-                              }
-
-
-                              html+='  </div>';
-                              html+=' </div>';
-
-
-
-
-
-                              html+=' </li>';
-
-
-                          }
-
-
-
-
-
-
-                      });
-                  }
-                  $("#timeline").html(html);
+//                  for (var i =0; i < kq[0]['data'].length ; i++) {
+//                      $.each(kq,function(key,item){
+//
+//                          if(kq[0]['data'][i]['user_id']== null){
+//
+//
+//                              html+='<li>';
+//                              html+='  <i class="fa fa-user bg-aqua"></i>';
+//
+//                              html+=' <div class="timeline-item">'
+//                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
+//
+//
+//                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['customers_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
+//
+//
+//                              html+=' <div class="timeline-body">';
+//                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
+//
+//                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
+//                              }
+//
+//
+//                              html+='  </div>';
+//                              html+=' </div>';
+//
+//
+//
+//
+//
+//                              html+=' </li>';
+//
+//
+//
+//                          }
+//                          else{
+//                              html+='<li>';
+//                              html+='  <i class="fa fa-user bg-yellow"></i>';
+//
+//                              html+=' <div class="timeline-item">'
+//                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
+//
+//
+//                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['user_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
+//
+//
+//                              html+=' <div class="timeline-body">';
+//                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
+//
+//                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
+//                              }
+//
+//
+//                              html+='  </div>';
+//                              html+=' </div>';
+//
+//
+//
+//
+//
+//                              html+=' </li>';
+//
+//
+//                          }
+//
+//
+//
+//
+//
+//
+//                      });
+//                  }
+                  $("#timeline").html(kq);
               }
           });
 
