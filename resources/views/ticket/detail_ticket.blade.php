@@ -1,6 +1,29 @@
 @extends('customer.layout_master')
 @section('page_css')
+    <link rel="stylesheet" href="{{url('public/css/jquery.fileupload.css')}}">
+    <link rel="stylesheet" href="{{url('public/css/toastr.min.css')}}">
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+  <style>
+      #page_ticket ul{
+          list-style: none;
+          text-align: center;
+      }
+      .active_page{
+          background: red;
+      }
+      #page_ticket ul li{
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          line-height: 40px;
+          font-size: 22px;
+      }
+      #detail_ticket{
+          background: #ecf0f5;
+          overflow: hidden;
+      }
+  </style>
 @endsection()
 @section('content')
 
@@ -92,7 +115,7 @@
 
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content">
+            <div class="content" id="detail_ticket">
               <!-- Content Header (Page header) -->
               <section class="content-header">
                 <h1>
@@ -112,6 +135,11 @@
                       <ul class="timeline" id="timeline">
 
                       </ul>
+                        <div class="row" id="page_ticket">
+                            <ul>
+
+                            </ul>
+                        </div>
                     </div>
                   </div>
 
@@ -120,6 +148,27 @@
             </div>
 
 
+              <div class="row fileupload-buttonbar " style="margin: 10px" >
+
+                  <!-- The fileinput-button span is used to style the file input field as button -->
+                  <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span class="col-md-10">Add files...</span>
+                    <input type="file" name="images[]" id="images" >
+                </span>
+                  <hr>
+                  <div id="images-to-upload">
+
+
+                  </div>
+
+                  <!-- The table listing the files available for upload/download -->
+
+
+                  {{--//end upload--}}
+
+
+              </div>
 
 
 
@@ -138,10 +187,8 @@
                               <div class="form-group">
                                   <textarea class="form-control" rows="3" placeholder="Write in your wall" name="email" type="textarea" id="target" autofocus=""></textarea>
                               </div>
-
-
                               <!-- Change this to a button or input when using this as a form -->
-                              <button type="" id="submit" class="btn btn-primary  btn-success save_ticket" style="float: right">Save Ticket</button>
+                              <button type="" class="btn btn-primary save_ticket" style="float: right">Save Ticket</button>
                           </fieldset>
                       </form>
                   </div>
@@ -165,6 +212,8 @@
 
 
 @section('page_script')
+    <script src="{{url('public/js/toastr.min.js')}}"></script>
+    <script src="{{url('public/js/main1.js')}}"></script>
   <script type="text/javascript">
       $(document).ready(function() {
           var page = {{$id}};
@@ -173,39 +222,42 @@
           img ="";
           category ="";
           priority="";
-
           $.ajax({
               url: 'http://ticket.dev-altamedia.com/api/ticket/'+page,
               type: 'GET',
               success:function(kq){
-                  $.each(kq,function(key,item){
-                      title+=item['title'];
-                      content+=item['content'];
-                      category+=item['category']['name'];
-                      priority+=item['priority'];
-                      if(priority==1){
-                          $("#priority").val('Thấp');
-                          $("#priority").css('color','green');
 
+                  var title = kq[0]['title'];
+                  var content = kq[0]['content'];
+                  var category = kq[0]['category']['name'];
+                  var priority = kq[0]['priority'];
+                  $.each(kq.priority,function(i,v){
+                      if(i == priority){
+                          $("#priority").val(v);
                       }
-                      else if(priority==1){
-                          $("#priority").css('color','blue');
-                          $("#priority").val('Trung bình');
-                      }
-                      else {
-                          $("#priority").css('color','red');
-                          $("#priority").val('Cao');
+                  });
 
-                      }
-                      $("#title").val(title);
-                      $("#content").val(content);
-                      $("#category").val(category);
-                      for(i=0;i<=item['detail_file'].length ;i++){
+                  if(priority==1){
+                      $("#priority").css('color','green');
+                  }
+                  else if(priority==2){
+                      $("#priority").css('color','blue');
+                  }
+                  else {
+                      $("#priority").css('color','red');
+                  }
+                  $("#title").val(title);
+                  $("#content").val(content);
+                  $("#category").val(category);                      for(i=0;i<kq[0]['detail_file'].length ;i++){
 
-                          $("#img").append('<img src="http://ticket.dev-altamedia.com/hinh/'+item['detail_file'][i]['file_name']+'/" width="100px" alt="" class="margin">');
+                          if(kq[0]['detail_file'][i]['type']=='zip'||kq[0]['detail_file'][i]['type']=='rar'){
+                              $("#img").append('<a href="http://ticket.dev-altamedia.com/hinh/file/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="50px" alt="" class="margin"> </a>');
+                          }
+                          else{
+                              $("#img").append('<img src="http://ticket.dev-altamedia.com/hinh/image/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'/" width="50px" alt="" class="margin">');
+                          }
                       }
 
-                  })
 
 
 
@@ -214,181 +266,123 @@
       });
 
   </script>
-    <script type="text/javascript">
-   
-      $("#pagination").click(function(event) {
-        /* Act on the event */
-        alert('dsadsad');
-      });
-    
-  </script>
-  <script type="text/javascript">
 
+
+
+  <script>
+      var ticket_id = {{$id}};
       function loadajax(page){
           var ticket_id = {{$id}};
 
 
-          html="";
-
+          var html="";
+          var li = "";
           $.ajax({
               url: 'http://ticket.dev-altamedia.com/api/ticket_response/'+ticket_id,
               type: 'GET',
               success:function(kq){
-                 
 
-//                  for (var i =0; i < kq[0]['data'].length ; i++) {
-//                      $.each(kq,function(key,item){
-//
-//                          if(kq[0]['data'][i]['user_id']== null){
-//
-//
-//                              html+='<li>';
-//                              html+='  <i class="fa fa-user bg-aqua"></i>';
-//
-//                              html+=' <div class="timeline-item">'
-//                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
-//
-//
-//                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['customers_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
-//
-//
-//                              html+=' <div class="timeline-body">';
-//                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
-//
-//                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
-//                              }
-//
-//
-//                              html+='  </div>';
-//                              html+=' </div>';
-//
-//
-//
-//
-//
-//                              html+=' </li>';
-//
-//
-//
-//                          }
-//                          else{
-//                              html+='<li>';
-//                              html+='  <i class="fa fa-user bg-yellow"></i>';
-//
-//                              html+=' <div class="timeline-item">'
-//                              html+='<span class="time" id="time"><i class="fa fa-clock-o"></i>'+kq[0]['data'][i]['created_at']+  ' </span>';
-//
-//
-//                              html+='<h3 class="timeline-header no-border"> <span style="color:blue">Name:'+kq[0]['data'][i]['user_id']+' </span>  '+kq[0]['data'][i]['content'] +'</h3>';
-//
-//
-//                              html+=' <div class="timeline-body">';
-//                              for (j =0;j<kq[0]['data'][i]['detail_file'].length;j++) {
-//
-//                                  html+='<img src="http://ticket.dev-altamedia.com/hinh/'+kq[0]['data'][i]['detail_file'][j]['file_name']+'/" width="200px" alt="..." class="margin">';
-//                              }
-//
-//
-//                              html+='  </div>';
-//                              html+=' </div>';
-//
-//
-//
-//
-//
-//                              html+=' </li>';
-//
-//
-//                          }
-//
-//
-//
-//
-//
-//
-//                      });
-//                  }
-                  $("#timeline").html(kq);
+                  $.each(kq.data,function(i,v){
+
+                      //console.log(v);//return false;
+                      //console.log(v.customers_id);
+                      html += '<li><i class="fa fa-user ';
+                      if(v.customers_id == null){
+
+                          html +='bg-yellow"></i>';
+                          html += '<div class="timeline-item">';
+                          html += '<span class="time" id="time"><i class="fa fa-clock-o"></i> 2018-01-27 20:29:00</span><h3 class="timeline-header no-border"><span style="color:blue">'+v.user_id+': </span>'+v.content+'</h3>';
+                          if(v.detail_file.length!=0){
+                              for (j =0;j<v.detail_file.length;j++) {
+                                  var date =new Date(v.detail_file[j]['created_at']);
+                                  date= moment(date).format('DD-MM-YY');
+                                  if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
+                                      html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" height="50px" width="50px" alt="" class="margin"> </a>';
+                                  }
+                                  else{
+                                      html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" height="50px"  width="50px" alt="" class="margin">';
+                                  }
+                              }
+                          }
+                      }else{
+                          html +='bg-green"></i>';
+                          html += '<div class="timeline-item">';
+                          html += '<span class="time" id="time"><i class="fa fa-clock-o"></i> 2018-01-27 20:29:00</span><h3 class="timeline-header no-border"><span style="color:blue">'+v.customers_id+': </span>'+v.content+'</h3>';
+                          if(v.detail_file.length!=0){
+                              for (j =0;j<v.detail_file.length;j++) {
+                                  var date =new Date(v.detail_file[j]['created_at']);
+                                  date= moment(date).format('DD-MM-YY');
+                                  if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
+                                      html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="50px" alt="" class="margin"> </a>';
+                                  }
+                                  else{
+                                      html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" height="50px"  width="50px" alt="" class="margin">';
+                                  }
+                              }
+                          }
+                      }
+
+                  })
+                  $("#timeline").html(html);
+
+
+                  for(i=1;i<=kq.last_page;i++){
+                      li += '<li>'+i+'</li>';
+                  }
+                  $('#page_ticket ul').html(li);
+                  $.getScript("./public/dist/js/test.js");
               }
+
           });
 
       }
-loadajax();
-  </script>
+      loadajax();
+
+    </script>
+
+    <script>
+        //Click Save ticket
+            $('.save_ticket').on('click', function(event) {
+            event.preventDefault();
+            var ticket_id={{$id}};
+            user_id='';
+            customers_id=1;
+            content=$("#target").val();
+            if(!content=="" ) {
+
+                $.ajax({
+                    url: 'http://ticket.dev-altamedia.com/api/ticket_response',
+                    type: 'POST',
+                    data: "content=" + content + "&ticket_id=" + ticket_id + "&user_id=" + user_id + "&customers_id="+customers_id,
+                    success: function (data) {
+                        array.forEach(function (item) {
+                            console.log(item)
+                            $.ajax({
+                                url: 'http://ticket.dev-altamedia.com/api/detail_file/'+item,
+                                type: 'PUT',
+                                data: "ticket_response_id="+data,
+                                success: function (kq) {
+                                    loadajax();
+                                },
+
+                            });
+
+                        })
 
 
-  <script type="text/javascript">
-$(document).ready(function() {
+                        toastr.success('Send success');
 
-  $("#submit").on('click',  function(event) {
-    event.preventDefault();
-    /* Act on the event */
-
-    target= $("#target").val();
-        
-
-    var ticket_id = {{$id}};
-    customers_id=null;
-    user_id=1;
-    if(target !="")
-    {
-      if(customers_id!=null){
-        $.ajax({
-
-         url : 'http://ticket.dev-altamedia.com/api/ticket_response',
-
-         type : 'POST',
-
-         data: 'customers_id='+customers_id+"&content="+target+"&ticket_id="+ticket_id,
+                        $("#target").val("");
+                        $('#images-to-upload').empty();
 
 
+                    },
 
-         success: function(data){
-         loadajax();
-          $("#target").val("");
-         },
+                });
+            }
+        });
 
-         error   : function(jqXHR,status, errorThrown){
-
-             my_error(jqXHR.status);
-
-         }
-
-     });
-     }
-     else{
-       $.ajax({
-
-         url : 'http://ticket.dev-altamedia.com/api/ticket_response',
-
-         type : 'POST',
-
-         data: 'user_id='+user_id+"&content="+target+"&ticket_id="+ticket_id,
-
-
-
-         success: function(data){
-
-           loadajax();
-          $("#target").val("");
-         },
-
-         error   : function(jqXHR,status, errorThrown){
-
-             my_error(jqXHR.status);
-
-         }
-
-     });
-     }
-   }
-  });
- 
-   
-});
-  
-</script>
-
+    </script>
 
 @endsection
 

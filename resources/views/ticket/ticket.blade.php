@@ -57,13 +57,13 @@
       {{--uploadfile--}}
 
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-        <div class="row fileupload-buttonbar " >
+        <div class="row fileupload-buttonbar " style="margin-left: 15px;" >
 
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span class="col-md-10">Add files...</span>
-                    <input type="file" name="images[]" id="images" >
+                    <input type="file" name="images[]" id="images"  >
                 </span>
                 <hr>
                 <div id="images-to-upload">
@@ -131,10 +131,10 @@
 
 <!-- ./wrapper -->
 <script src="{{url('public/js/jquery.uploadfile.js')}}"></script>
-<script src="{{url('public/js/toastr.min.js')}}"></script>
 <script src="{{url('public/js/jquery.ui.widget.js')}}"></script>
 
 <!-- The main application script -->
+<script src="{{url('public/js/toastr.min.js')}}"></script>
 <script src="{{url('public/js/main.js')}}"></script>
 <script src="{{url('public/js/jquery.fileupload.js')}}"></script>
 

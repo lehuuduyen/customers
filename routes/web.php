@@ -31,3 +31,6 @@ Route::group(['prefix'=>'ticket'],function(){
     Route::get('edit/{id}',['as'=>'ticket.edit','uses'=>'TicketController@getedit']);
     Route::get('detail/{id}',['as'=>'ticket.detail','uses'=>'TicketController@getdetail']);
 });
+
+    Route::get('myticket/{id}','MyticketController@getlist');
+
