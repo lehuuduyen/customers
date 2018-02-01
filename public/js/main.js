@@ -32,7 +32,7 @@ $('#images').on('change',function(e){
             }   else {
                 var template =
                     '<form class="form' + u + '" action="/upload"  > ' +
-                    '<img style="margin:5px 20px"  src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/"   width="100px"> ' +
+                    '<img style="margin:5px 20px"  src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png"   width="100px"> ' +
                     '<label style="margin:5px 20px" >' + file['name'] + '</label>' +
                     '<button style="margin:5px 20px" class="btn btn-primary upload' + u + '" >' +
                     '<i class="glyphicon glyphicon-upload"></i>' +
