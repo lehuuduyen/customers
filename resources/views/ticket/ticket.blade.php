@@ -68,7 +68,6 @@
                 <hr>
                 <div id="images-to-upload">
 
-
                 </div>
 
         <!-- The table listing the files available for upload/download -->

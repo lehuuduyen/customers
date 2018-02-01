@@ -59,10 +59,10 @@ $('#page_ticket li').on('click',function(){
                             var date =new Date(v.detail_file[j]['created_at']);
                             date= moment(date).format('DD-MM-YY');
                             if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
-                                html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="100px" alt="" class="margin"> </a>';
+                                html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" height="50px" width="50px" alt="" class="margin"> </a>';
                             }
                             else{
-                                html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" width="100px" alt="" class="margin">';
+                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
                             }
                         }
                     }
@@ -75,10 +75,10 @@ $('#page_ticket li').on('click',function(){
                             var date =new Date(v.detail_file[j]['created_at']);
                             date= moment(date).format('DD-MM-YY');
                             if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
-                                html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="100px" alt="" class="margin"> </a>';
+                                html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" width="50px" alt="" class="margin"> </a>';
                             }
                             else{
-                                html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" width="100px" alt="" class="margin">';
+                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
                             }
                         }
                     }

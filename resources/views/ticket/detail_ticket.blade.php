@@ -160,6 +160,7 @@
                   <div id="images-to-upload">
 
 
+
                   </div>
 
                   <!-- The table listing the files available for upload/download -->
@@ -283,9 +284,6 @@
               success:function(kq){
 
                   $.each(kq.data,function(i,v){
-
-                      //console.log(v);//return false;
-                      //console.log(v.customers_id);
                       html += '<li><i class="fa fa-user ';
                       if(v.customers_id == null){
 
@@ -297,10 +295,10 @@
                                   var date =new Date(v.detail_file[j]['created_at']);
                                   date= moment(date).format('DD-MM-YY');
                                   if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
-                                      html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" height="50px" width="50px" alt="" class="margin"> </a>';
+                                      html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" height="50px" width="50px" alt="" class="margin"> </a>';
                                   }
                                   else{
-                                      html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" height="50px"  width="50px" alt="" class="margin">';
+                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
                                   }
                               }
                           }
@@ -313,10 +311,10 @@
                                   var date =new Date(v.detail_file[j]['created_at']);
                                   date= moment(date).format('DD-MM-YY');
                                   if(v.detail_file[j]['type']=='zip'|v.detail_file[j]['type']=='rar'){
-                                      html+='<a href="http://ticket.dev-altamedia.com/hinh/file/'+date+'/'+v.detail_file[j]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="50px" alt="" class="margin"> </a>';
+                                      html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" width="50px" alt="" class="margin"> </a>';
                                   }
                                   else{
-                                      html+='<img src="http://ticket.dev-altamedia.com/hinh/image/'+date+'/'+v.detail_file[j]['file_name']+'/" height="50px"  width="50px" alt="" class="margin">';
+                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
                                   }
                               }
                           }
@@ -345,18 +343,17 @@
             $('.save_ticket').on('click', function(event) {
             event.preventDefault();
             var ticket_id={{$id}};
-            user_id='';
-            customers_id=1;
+            user_id='1';
+            customers_id="";
             content=$("#target").val();
             if(!content=="" ) {
-
                 $.ajax({
                     url: 'http://ticket.dev-altamedia.com/api/ticket_response',
                     type: 'POST',
                     data: "content=" + content + "&ticket_id=" + ticket_id + "&user_id=" + user_id + "&customers_id="+customers_id,
                     success: function (data) {
                         array.forEach(function (item) {
-                            console.log(item)
+
                             $.ajax({
                                 url: 'http://ticket.dev-altamedia.com/api/detail_file/'+item,
                                 type: 'PUT',
@@ -372,8 +369,10 @@
 
                         toastr.success('Send success');
 
-                        $("#target").val("");
-                        $('#images-to-upload').empty();
+                        location.reload();
+
+
+
 
 
                     },

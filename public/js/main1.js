@@ -10,7 +10,6 @@ $('#images').on('change',function(e){
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function(e){
-            console.log(file)
             if(file.type=="image/jpeg"||file.type=="image/png"||file.type=="image/gif") {
                 var template =
                     '<form class="form' + u + '" action="/upload"  > ' +
@@ -59,13 +58,14 @@ $(document).on('submit','form',function (e) {
     e.preventDefault();
     var index   = $(this).index();
     var formdata= new FormData($(this)[0]);
-    console.log(formdata)
     formdata.append('image',fileCollection[index]);
     var request = new XMLHttpRequest();
     request.open('post','http://ticket.dev-altamedia.com/api/detail_file',true);
     request.send(formdata);
     request.onreadystatechange = function() {
+        console.log(index)
         if (this.readyState == 4 && this.status == 200) {
+
             id=this.responseText;
             $(".id"+index).val(id);
             toastr.success('Upload Success');
