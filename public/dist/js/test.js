@@ -25,7 +25,7 @@ $("#email input").keyup(function(){
 	    	$(this).closest('.class_root').find('.flag_block').addClass('icon_circletop');
 	    }
 	});
-
+$("img.zoom").popImg();
 //address
 //regex address
 $("#address input").keyup(function(){
@@ -62,7 +62,7 @@ $('#page_ticket li').on('click',function(){
                                 html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" height="50px" width="50px" alt="" class="margin"> </a>';
                             }
                             else{
-                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
+                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin zoom">';
                             }
                         }
                     }
@@ -78,7 +78,7 @@ $('#page_ticket li').on('click',function(){
                                 html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" width="50px" alt="" class="margin"> </a>';
                             }
                             else{
-                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
+                                html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin zoom">';
                             }
                         }
                     }
@@ -92,7 +92,7 @@ $('#page_ticket li').on('click',function(){
                 li += '<li>'+i+'</li>';
             }
             $('#page_ticket ul').html(li);
-            $('#page_ticket > ul li:eq('+position+')').addClass('active_page');
+            $('#page_ticket > ul li:eq('+position+')').addClass('btn-primary');
             $.getScript("./public/dist/js/test.js");
         }
     });

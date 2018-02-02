@@ -27,7 +27,7 @@
                                         <th width="20%" style="text-align: center;">Customer</th>
                                         <th width="20%" style="text-align: center;">Title</th>
                                         <th width="20%" style="text-align: center;">Priority</th>
-                                        <th width="10%" style="text-align: center;">Tình trạng</th>
+                                        {{--<th width="10%" style="text-align: center;">Tình trạng</th>--}}
                                         <th width="10%" style="text-align: center;">Create_at</th>
                                         <th width="10%" style="text-align: center;">Update_at</th>
                                         <th width="10%" style="text-align: center;">Total Response</th>
@@ -71,7 +71,7 @@
                 { data: 'customers_id' },
                 { data: 'title' },
                 { data: 'priority' },
-                { data: 'status'},
+//                { data: 'status'},
                 { data: 'created_at' },
                 { data: 'updated_at' },
                 { data: 'Total Response', name: 'Total Response', orderable: false, searchable: false},

@@ -2,7 +2,7 @@
 @section('page_css')
     <link rel="stylesheet" href="{{url('public/css/jquery.fileupload.css')}}">
     <link rel="stylesheet" href="{{url('public/css/toastr.min.css')}}">
-  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
   <style>
       #page_ticket ul{
           list-style: none;
@@ -46,7 +46,16 @@
 
                 <h1>Thông tin Ticket</h1>
                 <div class="col-md-12" >
-                  <div class="row">
+                        <h3>Tình Trạng:
+                        <select class="form" id="selt">
+
+                        </select>
+
+
+                    </h3>
+
+
+                    <div class="row">
                     <div class="col-md-2">
                       <span>Tiêu đề</span>
                     </div>
@@ -211,10 +220,48 @@
 
 
 
-
 @section('page_script')
     <script src="{{url('public/js/toastr.min.js')}}"></script>
     <script src="{{url('public/js/main1.js')}}"></script>
+    <script src="{{url('public/js/popImg.js')}}"></script>
+
+    <script type="text/javascript">
+        var page = {{$id}};
+        html=""
+        $.ajax({
+            url: 'http://ticket.dev-altamedia.com/api/ticket/'+page,
+            type: 'GET',
+            success:function(kq){
+                for(i=1;i<=3;i++){
+                    if(kq[0]['status']==i){
+                        html+= '<option value="'+i+'" selected>'+kq['status'][i]+'</option>';
+                    }
+                    else{
+                        html+= '<option value="'+i+'">'+kq['status'][i]+'</option>';
+                    }
+                }
+
+                $("#selt").append(html);
+
+            }
+
+        });
+
+        $('#selt').on('change',function(){
+            var page = {{$id}};
+            val=$(this).val();
+            $.ajax({
+                url: 'http://ticket.dev-altamedia.com/api/ticket/'+page,
+                type: 'PUT',
+                data:'status='+val,
+                success:function(kq){
+                console.log(kq)
+
+                }
+            });
+
+        });
+    </script>
   <script type="text/javascript">
       $(document).ready(function() {
           var page = {{$id}};
@@ -252,10 +299,12 @@
                   $("#category").val(category);                      for(i=0;i<kq[0]['detail_file'].length ;i++){
 
                           if(kq[0]['detail_file'][i]['type']=='zip'||kq[0]['detail_file'][i]['type']=='rar'){
-                              $("#img").append('<a href="http://ticket.dev-altamedia.com/hinh/file/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'/" download><img src="http://ticket.dev-altamedia.com/hinh/image/30-01-18/313_1517305156_zip.png/" width="50px" alt="" class="margin"> </a>');
+                              $("#img").append('<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" width="50px" alt="" class="margin"> </a>');
                           }
                           else{
-                              $("#img").append('<img src="http://ticket.dev-altamedia.com/hinh/image/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'/" width="50px" alt="" class="margin">');
+                              $("#img").append('<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+kq['date']+'/'+kq[0]['detail_file'][i]['file_name']+'" width="50px" alt="" class="margin zoom">');
+                              $.getScript("./public/dist/js/test.js");
+
                           }
                       }
 
@@ -298,7 +347,7 @@
                                       html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" height="50px" width="50px" alt="" class="margin"> </a>';
                                   }
                                   else{
-                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
+                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin zoom">';
                                   }
                               }
                           }
@@ -314,7 +363,7 @@
                                       html+='<a href="http://ticket.dev-altamedia.com/storage/app/public/file/'+date+'/'+v.detail_file[j]['file_name']+'" download><img src="http://ticket.dev-altamedia.com/storage/app/public/image/30-01-18/313_1517305156_zip.png" width="50px" alt="" class="margin"> </a>';
                                   }
                                   else{
-                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margin">';
+                                      html+='<img src="http://ticket.dev-altamedia.com/storage/app/public/image/'+date+'/'+v.detail_file[j]['file_name']+'" height="50px"  width="50px" alt="" class="margi zoom">';
                                   }
                               }
                           }
@@ -329,6 +378,9 @@
                   }
                   $('#page_ticket ul').html(li);
                   $.getScript("./public/dist/js/test.js");
+              },
+              complete:function () {
+                  $('#page_ticket > ul li:first').addClass('btn-primary');
               }
 
           });
@@ -383,6 +435,9 @@
 
     </script>
 
+    <script type="text/javascript">
+
+    </script>
 @endsection
 
 
